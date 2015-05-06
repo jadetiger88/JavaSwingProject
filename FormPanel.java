@@ -4,6 +4,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -56,6 +57,8 @@ public class FormPanel extends JPanel {
 		femaleButton = new JRadioButton("female"); 
 		genderGroup = new ButtonGroup(); 
 		
+		nameLabel.setDisplayedMnemonic(KeyEvent.VK_N);
+		nameLabel.setLabelFor(nameTextField);
 		
 		genderGroup.add(maleButton);
 		genderGroup.add(femaleButton);
@@ -90,6 +93,7 @@ public class FormPanel extends JPanel {
 		employeeTypeModel.addElement("self-employed");
 		employeeType.setModel(employeeTypeModel); 
 		
+		okBtn.setMnemonic(KeyEvent.VK_O);
 		okBtn.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent arg0) {
