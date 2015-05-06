@@ -9,6 +9,7 @@ import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -27,6 +28,9 @@ public class FormPanel extends JPanel {
 	private FormListener formListener; 
 	private JList ageList; 
 	private JComboBox	employeeType; 
+	private JCheckBox citizenCheck;
+	private JLabel taxLabel;
+	private JTextField taxTextField; 
 
 	public FormPanel() {
 		Dimension dim = getPreferredSize(); 
@@ -40,6 +44,22 @@ public class FormPanel extends JPanel {
 		okBtn = new JButton("OK");
 		ageList = new JList(); 
 		employeeType = new JComboBox(); 
+		citizenCheck = new JCheckBox();
+		taxLabel = new JLabel("Tax ID: ");
+		taxTextField = new JTextField(10); 
+		
+		taxLabel.setEnabled(false);
+		taxTextField.setEnabled(false);
+		
+		citizenCheck.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				boolean isTicked = citizenCheck.isSelected(); 
+				taxLabel.setEnabled(isTicked);
+				taxTextField.setEnabled(isTicked);
+				
+			}
+			
+		});
 		
 		DefaultListModel ageListModel = new DefaultListModel();
 		ageListModel.addElement(new AgeCategory(0, "Under 18"));
@@ -63,7 +83,15 @@ public class FormPanel extends JPanel {
 				String occupation = occupationTextField.getText(); 
 				AgeCategory ageCat = (AgeCategory) ageList.getSelectedValue(); 
 				String empType = (String) employeeType.getSelectedItem();
-				FormEvent ev = new FormEvent(this, name, occupation, ageCat.getId(), empType); 
+				boolean isCitizen = citizenCheck.isSelected();
+				String taxID = taxTextField.getText(); 
+				FormEvent ev = new FormEvent(this, 
+											 name, 
+											 occupation, 
+											 ageCat.getId(), 
+											 empType, 
+											 isCitizen, 
+											 taxID); 
 				if (formListener != null) {
 					formListener.formEventOccurred(ev);
 				}
@@ -138,6 +166,51 @@ public class FormPanel extends JPanel {
 		gc.anchor = GridBagConstraints.FIRST_LINE_START; 
 		gc.insets = new Insets(0,0,0,0); 
 		add(employeeType, gc); 
+		
+		// Fourth row
+		gc.weightx = 1; 
+		gc.weighty = .2; 
+		gc.gridy++;
+
+		gc.gridx = 0; 
+		gc.anchor = GridBagConstraints.FIRST_LINE_END; 
+		gc.insets = new Insets(0,0,0,5); 
+		add(new JLabel("Employment;"), gc); 
+
+		gc.gridx = 1; 
+		gc.anchor = GridBagConstraints.FIRST_LINE_START; 
+		gc.insets = new Insets(0,0,0,0); 
+		add(employeeType, gc); 
+		
+		// Fifth row
+		gc.weightx = 1; 
+		gc.weighty = .2; 
+		gc.gridy++;
+
+		gc.gridx = 0; 
+		gc.anchor = GridBagConstraints.FIRST_LINE_END; 
+		gc.insets = new Insets(0,0,0,5); 
+		add(new JLabel("US Citizen"), gc); 
+
+		gc.gridx = 1; 
+		gc.anchor = GridBagConstraints.FIRST_LINE_START; 
+		gc.insets = new Insets(0,0,0,0); 
+		add(citizenCheck, gc); 
+		
+		// Sixth row
+		gc.weightx = 1; 
+		gc.weighty = .2; 
+		gc.gridy++;
+
+		gc.gridx = 0; 
+		gc.anchor = GridBagConstraints.FIRST_LINE_END; 
+		gc.insets = new Insets(0,0,0,5); 
+		add(taxLabel, gc); 
+
+		gc.gridx = 1; 
+		gc.anchor = GridBagConstraints.FIRST_LINE_START; 
+		gc.insets = new Insets(0,0,0,0); 
+		add(taxTextField, gc); 
 		
 		// Last row
 		gc.weightx = 1; 
