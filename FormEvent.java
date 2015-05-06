@@ -1,14 +1,18 @@
 import java.util.EventObject;
 
+import javax.swing.ButtonGroup;
+import javax.swing.JRadioButton;
+
 public class FormEvent extends EventObject {
 
 	private String name;
 	private String occupation;
 	private int ageCategory;
 	private String empType; 
-	private boolean USCitizen; 
-	private String TaxID; 
-
+	private boolean usCitizen; 
+	private String taxID; 
+	private String gender;
+	
 	public FormEvent(Object source) {
 		super(source);
 	}
@@ -19,17 +23,19 @@ public class FormEvent extends EventObject {
 					 int ageCategory, 
 					 String empType, 
 					 boolean USCitizen,
-					 String taxID) {
+					 String taxID, 
+					 String gender) {
 		super(source);
 		this.name = name; 
 		this.occupation = occupation;
 		this.ageCategory = ageCategory; 
 		this.empType = empType; 
-		this.USCitizen = USCitizen; 
-		this.TaxID = taxID; 
+		this.usCitizen = USCitizen; 
+		this.taxID = taxID; 
+		this.gender = gender; 
 	}
 	public String getTaxID() {
-		return TaxID;
+		return taxID;
 	}
 
 	public String getName() {
@@ -55,6 +61,11 @@ public class FormEvent extends EventObject {
 	public String getEmployeeType() {
 		// TODO Auto-generated method stub
 		return empType;
+	}
+
+	public String getGender() {
+		// TODO Auto-generated method stub
+		return gender;
 	}
 
 }

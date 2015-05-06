@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -14,6 +15,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 
@@ -31,6 +33,9 @@ public class FormPanel extends JPanel {
 	private JCheckBox citizenCheck;
 	private JLabel taxLabel;
 	private JTextField taxTextField; 
+	private JRadioButton maleButton; 
+	private JRadioButton femaleButton; 
+	private ButtonGroup genderGroup; 
 
 	public FormPanel() {
 		Dimension dim = getPreferredSize(); 
@@ -47,10 +52,19 @@ public class FormPanel extends JPanel {
 		citizenCheck = new JCheckBox();
 		taxLabel = new JLabel("Tax ID: ");
 		taxTextField = new JTextField(10); 
+		maleButton = new JRadioButton("male"); 
+		femaleButton = new JRadioButton("female"); 
+		genderGroup = new ButtonGroup(); 
+		
+		
+		genderGroup.add(maleButton);
+		genderGroup.add(femaleButton);
+		maleButton.setSelected(true);
+		maleButton.setActionCommand("male");
+		femaleButton.setActionCommand("female");
 		
 		taxLabel.setEnabled(false);
 		taxTextField.setEnabled(false);
-		
 		citizenCheck.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				boolean isTicked = citizenCheck.isSelected(); 
@@ -85,13 +99,15 @@ public class FormPanel extends JPanel {
 				String empType = (String) employeeType.getSelectedItem();
 				boolean isCitizen = citizenCheck.isSelected();
 				String taxID = taxTextField.getText(); 
+				String gender = genderGroup.getSelection().getActionCommand();
 				FormEvent ev = new FormEvent(this, 
 											 name, 
 											 occupation, 
 											 ageCat.getId(), 
 											 empType, 
 											 isCitizen, 
-											 taxID); 
+											 taxID, 
+											 gender); 
 				if (formListener != null) {
 					formListener.formEventOccurred(ev);
 				}
@@ -211,6 +227,31 @@ public class FormPanel extends JPanel {
 		gc.anchor = GridBagConstraints.FIRST_LINE_START; 
 		gc.insets = new Insets(0,0,0,0); 
 		add(taxTextField, gc); 
+		
+		// 7th row
+		gc.weightx = 1; 
+		gc.weighty = .1; 
+		gc.gridy++;
+
+		gc.gridx = 0; 
+		gc.anchor = GridBagConstraints.LINE_END; 
+		gc.insets = new Insets(0,0,0,5); 
+		add(new JLabel("gender:"), gc); 
+
+		gc.gridx = 1; 
+		gc.anchor = GridBagConstraints.FIRST_LINE_START; 
+		gc.insets = new Insets(0,0,0,0); 
+		add(maleButton, gc); 
+		
+		// 8th row
+		gc.weightx = 1; 
+		gc.weighty = .1; 
+		gc.gridy++;
+
+		gc.gridx = 1; 
+		gc.anchor = GridBagConstraints.FIRST_LINE_START; 
+		gc.insets = new Insets(0,0,0,0); 
+		add(femaleButton, gc); 
 		
 		// Last row
 		gc.weightx = 1; 
