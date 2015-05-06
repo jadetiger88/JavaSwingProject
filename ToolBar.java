@@ -32,11 +32,11 @@ public class ToolBar extends JPanel implements ActionListener {
 		// TODO Auto-generated method stub
 		JButton clicked = (JButton) e.getSource();
 		if (clicked == helloButton) {
-			if (stringListener != null)  {
+			if (stringListener != null) {
 				stringListener.textEmitted("Hello Button Clicked\n");
 			}
 		} else {
-			if (stringListener != null)  {
+			if (stringListener != null) {
 				stringListener.textEmitted("Goodbye Button Clicked\n");
 			}
 		}
