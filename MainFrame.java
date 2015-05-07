@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -17,6 +18,7 @@ public class MainFrame extends JFrame {
 	private TextPanel textPanel;
 	private ToolBar toolBar;
 	private FormPanel formPanel;
+	private JFileChooser fileChooser;
 
 	public MainFrame() {
 
@@ -25,6 +27,7 @@ public class MainFrame extends JFrame {
 		textPanel = new TextPanel();
 		formPanel = new FormPanel();
 		setJMenuBar(createMenuBar());
+		fileChooser = new JFileChooser();
 
 		toolBar = new ToolBar();
 		toolBar.setStringListener(new StringListener() {
@@ -61,10 +64,10 @@ public class MainFrame extends JFrame {
 		JMenuBar menuBar = new JMenuBar();
 
 		JMenu fileMenu = new JMenu("File");
-		JMenuItem exportDatatem = new JMenuItem("Export Item...");
+		JMenuItem exportDataItem = new JMenuItem("Export Item...");
 		JMenuItem importDataItem = new JMenuItem("Import Item...");
 		JMenuItem exitItem = new JMenuItem("Exit");
-		fileMenu.add(exportDatatem);
+		fileMenu.add(exportDataItem);
 		fileMenu.add(importDataItem);
 		fileMenu.addSeparator();
 		fileMenu.add(exitItem);
@@ -79,6 +82,24 @@ public class MainFrame extends JFrame {
 						JOptionPane.OK_CANCEL_OPTION);
 				if (rtn == JOptionPane.OK_OPTION) {
 					System.exit(0);
+				}
+			}
+
+		});
+
+		importDataItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (fileChooser.showOpenDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION) {
+					System.out.println(fileChooser.getSelectedFile());
+				}
+			}
+
+		});
+
+		exportDataItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (fileChooser.showSaveDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION) {
+					System.out.println(fileChooser.getSelectedFile());
 				}
 			}
 
