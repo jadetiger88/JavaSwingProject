@@ -1,3 +1,4 @@
+package view;
 public class Utile {
 	public static String getFileExtension(String name) {
 		int extensionIndex = name.lastIndexOf(".");
