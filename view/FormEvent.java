@@ -64,5 +64,13 @@ public class FormEvent extends EventObject {
 		// TODO Auto-generated method stub
 		return gender;
 	}
+	public boolean isUsCitizen() {
+		return usCitizen;
+	}
+
+	public void setUsCitizen(boolean usCitizen) {
+		this.usCitizen = usCitizen;
+	}
+
 
 }
