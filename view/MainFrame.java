@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.util.prefs.Preferences;
 
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFileChooser;
@@ -27,6 +28,7 @@ public class MainFrame extends JFrame {
 	private Controller controller;
 	private TablePanel tablePanel;
 	private PrefsDialog prefsDialog;
+	private Preferences prefs;
 
 	public MainFrame() {
 
@@ -41,7 +43,21 @@ public class MainFrame extends JFrame {
 		controller = new Controller();
 		tablePanel = new TablePanel();
 		prefsDialog = new PrefsDialog(this);
+		prefs = Preferences.userRoot().node("sqlPref");
 
+		prefsDialog.setPreferencesListener(new PrefsListener() {
+			public void SetPreferences(String user, String password,
+					Integer port) {
+				prefs.put("user", user);
+				prefs.put("password", password);
+				prefs.putInt("port", port);
+			}
+		});
+
+		String user = prefs.get("user", "");
+		String password = prefs.get("password", "");
+		Integer port = prefs.getInt("port", 3306);
+		prefsDialog.setDefault(user, password, port);
 		tablePanel.setData(controller.getPeople());
 		tablePanel.setPersonTableListener(new PersonTableListener() {
 			public void deleteRow(int row) {
