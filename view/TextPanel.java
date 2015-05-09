@@ -1,4 +1,5 @@
 package view;
+
 import java.awt.BorderLayout;
 
 import javax.swing.JPanel;

@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.io.File;
 import java.io.IOException;
 
 import javax.swing.JCheckBoxMenuItem;
@@ -42,6 +41,11 @@ public class MainFrame extends JFrame {
 		tablePanel = new TablePanel();
 
 		tablePanel.setData(controller.getPeople());
+		tablePanel.setPersonTableListener(new PersonTableListener() {
+			public void deleteRow(int row) {
+				controller.removeRow(row);
+			}
+		});
 
 		toolBar.setStringListener(new StringListener() {
 			public void textEmitted(String text) {

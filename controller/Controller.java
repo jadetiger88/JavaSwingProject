@@ -94,4 +94,8 @@ public class Controller {
 	public void loadFromFile(File file) throws IOException {
 		db.loadFromFile(file);
 	}
+
+	public void removeRow(int index) {
+		db.removePerson(index);
+	}
 }
