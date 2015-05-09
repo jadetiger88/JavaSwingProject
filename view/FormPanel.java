@@ -28,7 +28,7 @@ public class FormPanel extends JPanel {
 	private JLabel occupationLabel;
 	private JTextField nameTextField;
 	private JTextField occupationTextField;
-	private JButton okBtn;
+	private JButton addBtn;
 	private FormListener formListener;
 	private JList ageList;
 	private JComboBox employeeType;
@@ -48,7 +48,7 @@ public class FormPanel extends JPanel {
 		occupationLabel = new JLabel("Occupation: ");
 		nameTextField = new JTextField(10);
 		occupationTextField = new JTextField(10);
-		okBtn = new JButton("OK");
+		addBtn = new JButton("Add");
 		ageList = new JList();
 		employeeType = new JComboBox();
 		citizenCheck = new JCheckBox();
@@ -94,8 +94,8 @@ public class FormPanel extends JPanel {
 		employeeTypeModel.addElement("self-employed");
 		employeeType.setModel(employeeTypeModel);
 
-		okBtn.setMnemonic(KeyEvent.VK_O);
-		okBtn.addActionListener(new ActionListener() {
+		addBtn.setMnemonic(KeyEvent.VK_A);
+		addBtn.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent arg0) {
 				String name = nameTextField.getText();
@@ -245,7 +245,7 @@ public class FormPanel extends JPanel {
 		gc.gridx = 1;
 		gc.anchor = GridBagConstraints.FIRST_LINE_START;
 		gc.insets = new Insets(0, 0, 0, 0);
-		add(okBtn, gc);
+		add(addBtn, gc);
 
 	}
 

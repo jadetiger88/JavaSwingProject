@@ -32,33 +32,43 @@ public class MainFrame extends JFrame {
 
 	public MainFrame() {
 
-		super("Hello World");
+		super("People Database");
 		setLayout(new BorderLayout());
+		setJMenuBar(createMenuBar());
+		toolBar = new ToolBar();
 		textPanel = new TextPanel();
 		formPanel = new FormPanel();
-		setJMenuBar(createMenuBar());
-		fileChooser = new JFileChooser();
-		fileChooser.setFileFilter(new PersonFileFilter());
-		toolBar = new ToolBar();
-		controller = new Controller();
 		tablePanel = new TablePanel();
 		prefsDialog = new PrefsDialog(this);
+		fileChooser = new JFileChooser();
+		controller = new Controller();
+
+		// Layout components
+		add(formPanel, BorderLayout.WEST);
+		add(toolBar, BorderLayout.NORTH);
+		add(tablePanel, BorderLayout.CENTER);
+		setMinimumSize(new Dimension(500, 400));
+		setSize(600, 500);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setLocationRelativeTo(null);
+
+		// Set filter for file chooser
+		fileChooser.setFileFilter(new PersonFileFilter());
+
+		// Load saved preference if any
 		prefs = Preferences.userRoot().node("sqlPref");
-
-		prefsDialog.setPreferencesListener(new PrefsListener() {
-			public void SetPreferences(String user, String password,
-					Integer port) {
-				prefs.put("user", user);
-				prefs.put("password", password);
-				prefs.putInt("port", port);
-			}
-		});
-
 		String user = prefs.get("user", "");
 		String password = prefs.get("password", "");
 		Integer port = prefs.getInt("port", 3306);
 		prefsDialog.setDefault(user, password, port);
+
+		// Load data in table
 		tablePanel.setData(controller.getPeople());
+
+		// Show MianFrame
+		setVisible(true);
+
+		// Add Listeners
 		tablePanel.setPersonTableListener(new PersonTableListener() {
 			public void deleteRow(int row) {
 				controller.removeRow(row);
@@ -78,34 +88,55 @@ public class MainFrame extends JFrame {
 			}
 		});
 
-		add(formPanel, BorderLayout.WEST);
-		add(toolBar, BorderLayout.NORTH);
-		add(tablePanel, BorderLayout.CENTER);
-		setMinimumSize(new Dimension(500, 400));
-		setSize(600, 500);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setLocationRelativeTo(null);
-		setVisible(true);
+		prefsDialog.setPreferencesListener(new PrefsListener() {
+			public void SetPreferences(String user, String password,
+					Integer port) {
+				prefs.put("user", user);
+				prefs.put("password", password);
+				prefs.putInt("port", port);
+			}
+		});
+
 	}
 
 	private JMenuBar createMenuBar() {
 
+		// Create menu Bar, menu items and sub menu-items
 		JMenuBar menuBar = new JMenuBar();
-
 		JMenu fileMenu = new JMenu("File");
 		JMenuItem exportDataItem = new JMenuItem("Export Item...");
 		JMenuItem importDataItem = new JMenuItem("Import Item...");
 		JMenuItem exitItem = new JMenuItem("Exit");
+		JMenu windowMenu = new JMenu("Window");
+		JMenu inputForm = new JMenu("Input Form");
+		JCheckBoxMenuItem showForm = new JCheckBoxMenuItem("Show");
+		JMenuItem prefsItem = new JMenuItem("Preferences...");
+
+		// Add menu items to menu bar, add sub-menu items to menu items
+		menuBar.add(fileMenu);
+		menuBar.add(windowMenu);
 		fileMenu.add(exportDataItem);
 		fileMenu.add(importDataItem);
 		fileMenu.addSeparator();
 		fileMenu.add(exitItem);
+		windowMenu.add(inputForm);
+		windowMenu.add(prefsItem);
+		inputForm.add(showForm);
+		showForm.setSelected(true);
+
+		// Add Mnemonics
 		fileMenu.setMnemonic(KeyEvent.VK_F);
 		exitItem.setMnemonic(KeyEvent.VK_X);
+
+		// Add Accelerator keys
+		prefsItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P,
+				ActionEvent.CTRL_MASK));
 		exitItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q,
 				ActionEvent.CTRL_MASK));
 		importDataItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I,
 				ActionEvent.CTRL_MASK));
+
+		// Add Action Listeners to menu items or sub-menu items
 		exitItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int rtn = JOptionPane.showConfirmDialog(MainFrame.this,
@@ -148,34 +179,20 @@ public class MainFrame extends JFrame {
 					}
 				}
 			}
-
 		});
 
-		JMenu windowMenu = new JMenu("Window");
-		JMenu show = new JMenu("Show");
-		JCheckBoxMenuItem showForm = new JCheckBoxMenuItem("Show Form");
-		JMenuItem prefsItem = new JMenuItem("Preferences...");
-		show.add(showForm);
-		windowMenu.add(show);
-		windowMenu.add(prefsItem);
-		showForm.setSelected(true);
 		showForm.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
 				JCheckBoxMenuItem menuItem = (JCheckBoxMenuItem) ev.getSource();
 				formPanel.setVisible(menuItem.isSelected());
 			}
-
 		});
 
 		prefsItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				prefsDialog.setVisible(true);
 			}
-
 		});
-
-		menuBar.add(fileMenu);
-		menuBar.add(windowMenu);
 
 		return menuBar;
 	}
