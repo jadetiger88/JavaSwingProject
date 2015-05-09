@@ -1,4 +1,5 @@
 package view;
+
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -165,21 +166,6 @@ public class FormPanel extends JPanel {
 		gc.anchor = GridBagConstraints.FIRST_LINE_START;
 		gc.insets = new Insets(0, 0, 0, 0);
 		add(ageList, gc);
-
-		// Fourth row
-		gc.weightx = 1;
-		gc.weighty = .2;
-		gc.gridy++;
-
-		gc.gridx = 0;
-		gc.anchor = GridBagConstraints.FIRST_LINE_END;
-		gc.insets = new Insets(0, 0, 0, 5);
-		add(new JLabel("Employment;"), gc);
-
-		gc.gridx = 1;
-		gc.anchor = GridBagConstraints.FIRST_LINE_START;
-		gc.insets = new Insets(0, 0, 0, 0);
-		add(employeeType, gc);
 
 		// Fourth row
 		gc.weightx = 1;
