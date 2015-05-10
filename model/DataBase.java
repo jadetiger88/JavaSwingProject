@@ -11,6 +11,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -105,6 +106,30 @@ public class DataBase {
 		checkExist.close();
 	}
 
+	public void load() throws SQLException {
+		people.clear();
+		String sql = "select id, name, age, employment, tax_id, us_citizen, gender, occupation from people order by name";
+		Statement select = con.createStatement();
+		ResultSet results = select.executeQuery(sql);
+		while (results.next()) {
+			int id = results.getInt("id");
+			String name = results.getString("name");
+			String age = results.getString("age");
+			String employment = results.getString("employment");
+			String tax_id = results.getString("tax_id");
+			boolean us_citizen = results.getBoolean("us_citizen");
+			String gender = results.getString("gender");
+			String occupation = results.getString("occupation");
+			Person person = new Person(id, name, occupation,
+					AgeCategory.valueOf(age),
+					EmploymentCategory.valueOf(employment), us_citizen, tax_id,
+					Gender.valueOf(gender));
+			people.add(person);
+			System.out.println(person);
+		}
+
+	}
+
 	public void addPerson(Person p) {
 		people.add(p);
 	}
@@ -139,5 +164,4 @@ public class DataBase {
 	public void removePerson(int index) {
 		people.remove(index);
 	}
-
 }
