@@ -54,15 +54,41 @@ public class DataBase {
 	public void save() throws SQLException {
 		String checkExistSql = "select count(*) as count from people where id=?";
 		PreparedStatement checkExist = con.prepareStatement(checkExistSql);
+		String insertSql = "insert into people (id, name, age, employment, tax_id, us_citizen, gender, occupation) value(?,?,?,?,?,?,?,?)";
+		PreparedStatement insert = con.prepareStatement(insertSql);
 		for (Person person : people) {
+
 			int id = person.getId();
+			String name = person.getName();
+			String ageCategory = person.getAgeCategory().name();
+			String employmentCategory = person.getEmpType().name();
+			String tax_id = person.getTaxID();
+			boolean us_citizen = person.isUsCitizen();
+			String gender = person.getGender().name();
+			String occupation = person.getOccupation();
+
 			checkExist.setInt(1, id);
 			ResultSet result = checkExist.executeQuery();
 			result.next();
 			int count = result.getInt(1);
 			System.out.println("Count for person with ID " + id + " is "
 					+ count);
+			if (count == 0) {
+				insert.setInt(1, id);
+				insert.setString(2, name);
+				insert.setString(3, ageCategory);
+				insert.setString(4, employmentCategory);
+				insert.setString(5, tax_id);
+				insert.setBoolean(6, us_citizen);
+				insert.setString(7, gender);
+				insert.setString(8, occupation);
+				insert.executeUpdate();
+
+			} else {
+
+			}
 		}
+		insert.close();
 		checkExist.close();
 	}
 
