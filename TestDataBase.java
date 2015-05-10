@@ -21,7 +21,7 @@ public class TestDataBase {
 
 		db.addPerson(new Person("Joe", "Builder", AgeCategory.ADULT,
 				EmploymentCategory.EMPLOYED, true, "777", Gender.MALE));
-		db.addPerson(new Person("Sue", "Artist", AgeCategory.ADULT,
+		db.addPerson(new Person("Sue", "Eng", AgeCategory.ADULT,
 				EmploymentCategory.SELF_EMPLOYED, false, "null", Gender.FEMALE));
 
 		try {

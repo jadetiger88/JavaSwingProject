@@ -56,6 +56,9 @@ public class DataBase {
 		PreparedStatement checkExist = con.prepareStatement(checkExistSql);
 		String insertSql = "insert into people (id, name, age, employment, tax_id, us_citizen, gender, occupation) value(?,?,?,?,?,?,?,?)";
 		PreparedStatement insert = con.prepareStatement(insertSql);
+		String updateSql = "update people set name=?, age=?, employment=?, tax_id=?, us_citizen=?, gender=?, occupation=? where id=?";
+		PreparedStatement updateOp = con.prepareStatement(updateSql);
+
 		for (Person person : people) {
 
 			int id = person.getId();
@@ -85,10 +88,20 @@ public class DataBase {
 				insert.executeUpdate();
 
 			} else {
+				updateOp.setString(1, name);
+				updateOp.setString(2, ageCategory);
+				updateOp.setString(3, employmentCategory);
+				updateOp.setString(4, tax_id);
+				updateOp.setBoolean(5, us_citizen);
+				updateOp.setString(6, gender);
+				updateOp.setString(7, occupation);
+				updateOp.setInt(8, id);
+				updateOp.executeUpdate();
 
 			}
 		}
 		insert.close();
+		updateOp.close();
 		checkExist.close();
 	}
 
