@@ -75,9 +75,13 @@ public class MainFrame extends JFrame {
 			}
 		});
 
-		toolBar.setStringListener(new StringListener() {
-			public void textEmitted(String text) {
-				textPanel.append(text);
+		toolBar.setToolBarListener(new ToolBarListener() {
+			public void saveClick() {
+				System.out.println("save button clicked");
+			}
+
+			public void refreshClick() {
+				System.out.println("refresh button clicked");
 			}
 		});
 
