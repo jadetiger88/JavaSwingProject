@@ -37,7 +37,6 @@ public class Person implements Serializable {
 			boolean usCitizen, String taxID, Gender gender) {
 		this(name, occupation, ageCategory, empType, usCitizen, taxID, gender);
 		this.id = id;
-		this.count--;
 		return;
 	}
 

@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.prefs.Preferences;
 
 import javax.swing.JCheckBoxMenuItem;
@@ -76,12 +77,15 @@ public class MainFrame extends JFrame {
 		});
 
 		toolBar.setToolBarListener(new ToolBarListener() {
+
 			public void saveClick() {
-				System.out.println("save button clicked");
+				connect();
+				save();
 			}
 
 			public void refreshClick() {
-				System.out.println("refresh button clicked");
+				connect();
+				refresh();
 			}
 		});
 
@@ -101,6 +105,38 @@ public class MainFrame extends JFrame {
 			}
 		});
 
+	}
+
+	private void connect() {
+		try {
+			controller.connect();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(MainFrame.this,
+					"Can not connect to Database", "Database Error",
+					JOptionPane.ERROR_MESSAGE);
+		}
+
+	}
+
+	private void save() {
+		try {
+			controller.save();
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(MainFrame.this,
+					"Can not save to Database", "Database Error",
+					JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
+	private void refresh() {
+		try {
+			controller.load();
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(MainFrame.this,
+					"Can not load from Database", "Database Error",
+					JOptionPane.ERROR_MESSAGE);
+		}
+		tablePanel.refresh();
 	}
 
 	private JMenuBar createMenuBar() {
