@@ -10,6 +10,34 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
 
+class ServerInfo {
+	int id;
+	String name;
+
+	ServerInfo(String name, int id) {
+
+		this.name = name;
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public String toString() {
+		return name;
+	}
+
+}
+
 public class MessagePanel extends JPanel {
 
 	private JTree serverTree;
@@ -26,8 +54,10 @@ public class MessagePanel extends JPanel {
 			public void valueChanged(TreeSelectionEvent arg0) {
 				DefaultMutableTreeNode node = (DefaultMutableTreeNode) serverTree
 						.getLastSelectedPathComponent();
-				String location = (String) node.getUserObject();
-				System.out.println(location);
+				Object server = (Object) node.getUserObject();
+				Integer id = server instanceof ServerInfo ? ((ServerInfo) server)
+						.getId() : null;
+				System.out.println(server + ";		ID: " + id);
 			}
 
 		});
@@ -36,17 +66,23 @@ public class MessagePanel extends JPanel {
 
 	private DefaultMutableTreeNode createTreeNode() {
 
+		int id = 0;
+
 		DefaultMutableTreeNode servers = new DefaultMutableTreeNode("Servers");
 
 		DefaultMutableTreeNode usa = new DefaultMutableTreeNode("USA");
-		DefaultMutableTreeNode newYork = new DefaultMutableTreeNode("New York");
-		DefaultMutableTreeNode boston = new DefaultMutableTreeNode("Boston");
+		DefaultMutableTreeNode newYork = new DefaultMutableTreeNode(
+				new ServerInfo("New York", id++));
+		DefaultMutableTreeNode boston = new DefaultMutableTreeNode(
+				new ServerInfo("Boston", id++));
 		DefaultMutableTreeNode losAngele = new DefaultMutableTreeNode(
-				"Los Angeles");
+				new ServerInfo("Los Angeles", id++));
 
 		DefaultMutableTreeNode uk = new DefaultMutableTreeNode("UK");
-		DefaultMutableTreeNode london = new DefaultMutableTreeNode("London");
-		DefaultMutableTreeNode edinburg = new DefaultMutableTreeNode("Edinburg");
+		DefaultMutableTreeNode london = new DefaultMutableTreeNode(
+				new ServerInfo("London", id++));
+		DefaultMutableTreeNode edinburg = new DefaultMutableTreeNode(
+				new ServerInfo("Edinburg", id++));
 
 		servers.add(usa);
 		servers.add(uk);
