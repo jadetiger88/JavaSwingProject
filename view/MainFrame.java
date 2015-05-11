@@ -20,6 +20,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 
 import controller.Controller;
@@ -35,6 +36,7 @@ public class MainFrame extends JFrame {
 	private PrefsDialog prefsDialog;
 	private Preferences prefs;
 	private JSplitPane splitPane;
+	private JTabbedPane tabPane;
 
 	public MainFrame() {
 
@@ -48,11 +50,14 @@ public class MainFrame extends JFrame {
 		prefsDialog = new PrefsDialog(this);
 		fileChooser = new JFileChooser();
 		controller = new Controller();
+		tabPane = new JTabbedPane();
 		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, formPanel,
-				tablePanel);
+				tabPane);
 		splitPane.setOneTouchExpandable(true);
 
 		// Layout components
+		tabPane.addTab("Person", tablePanel);
+		tabPane.addTab("Message", textPanel);
 		add(toolBar, BorderLayout.NORTH);
 		add(splitPane, BorderLayout.CENTER);
 		setMinimumSize(new Dimension(500, 400));
