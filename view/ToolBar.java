@@ -9,23 +9,26 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JToolBar;
 
-public class ToolBar extends JPanel implements ActionListener {
+public class ToolBar extends JToolBar implements ActionListener {
 	private JButton saveButton;
 	private JButton refreshButton;
 	private ToolBarListener toolBarListener;
 
 	public ToolBar() {
 
-		saveButton = new JButton("save");
+		saveButton = new JButton();
 		saveButton.setIcon(createIcon("../images/Save16.gif"));
-		refreshButton = new JButton("refresh");
+		saveButton.setToolTipText("save");
+		refreshButton = new JButton();
 		refreshButton.setIcon(createIcon("../images/Refresh16.gif"));
+		refreshButton.setToolTipText("refresh");
 		setBorder(BorderFactory.createEtchedBorder());
 		saveButton.addActionListener(this);
 		refreshButton.addActionListener(this);
-		setLayout(new FlowLayout(FlowLayout.LEFT));
 		add(saveButton);
+		addSeparator();
 		add(refreshButton);
 	}
 
