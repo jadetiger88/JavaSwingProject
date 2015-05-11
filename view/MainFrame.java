@@ -37,6 +37,7 @@ public class MainFrame extends JFrame {
 	private Preferences prefs;
 	private JSplitPane splitPane;
 	private JTabbedPane tabPane;
+	private MessagePanel messagePanel;
 
 	public MainFrame() {
 
@@ -51,13 +52,14 @@ public class MainFrame extends JFrame {
 		fileChooser = new JFileChooser();
 		controller = new Controller();
 		tabPane = new JTabbedPane();
+		messagePanel = new MessagePanel();
 		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, formPanel,
 				tabPane);
 		splitPane.setOneTouchExpandable(true);
 
 		// Layout components
 		tabPane.addTab("Person", tablePanel);
-		tabPane.addTab("Message", textPanel);
+		tabPane.addTab("Message", messagePanel);
 		add(toolBar, BorderLayout.NORTH);
 		add(splitPane, BorderLayout.CENTER);
 		setMinimumSize(new Dimension(500, 400));
