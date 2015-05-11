@@ -37,17 +37,14 @@ public class DataBase {
 
 		String url = "jdbc:mysql://localhost:3306/swingtest";
 		con = DriverManager.getConnection(url, "root", "root");
-		System.out.println("Connected");
 	}
 
 	public void disconnect() {
 		if (con != null) {
 			try {
 				con.close();
-				System.out.println("Disconnected");
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
-				System.out.println("Can not close connection");
 			}
 		}
 	}
@@ -75,8 +72,6 @@ public class DataBase {
 			ResultSet result = checkExist.executeQuery();
 			result.next();
 			int count = result.getInt(1);
-			System.out.println("Count for person with ID " + id + " is "
-					+ count);
 			if (count == 0) {
 				insert.setInt(1, id);
 				insert.setString(2, name);
@@ -125,7 +120,6 @@ public class DataBase {
 					EmploymentCategory.valueOf(employment), us_citizen, tax_id,
 					Gender.valueOf(gender));
 			people.add(person);
-			System.out.println(person);
 		}
 
 	}

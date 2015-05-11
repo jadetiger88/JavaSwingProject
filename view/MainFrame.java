@@ -5,6 +5,9 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.prefs.Preferences;
@@ -50,7 +53,7 @@ public class MainFrame extends JFrame {
 		add(tablePanel, BorderLayout.CENTER);
 		setMinimumSize(new Dimension(500, 400));
 		setSize(600, 500);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setLocationRelativeTo(null);
 
 		// Set filter for file chooser
@@ -70,6 +73,14 @@ public class MainFrame extends JFrame {
 		setVisible(true);
 
 		// Add Listeners
+		addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				controller.disconnect();
+				dispose();
+				System.gc();
+			}
+		});
+
 		tablePanel.setPersonTableListener(new PersonTableListener() {
 			public void deleteRow(int row) {
 				controller.removeRow(row);
@@ -182,8 +193,12 @@ public class MainFrame extends JFrame {
 				int rtn = JOptionPane.showConfirmDialog(MainFrame.this,
 						"Do you really want to exit", "Conform exit",
 						JOptionPane.OK_CANCEL_OPTION);
+
 				if (rtn == JOptionPane.OK_OPTION) {
-					System.exit(0);
+					WindowListener[] listeners = getWindowListeners();
+					for (WindowListener l : listeners) {
+						l.windowClosing(new WindowEvent(MainFrame.this, 0));
+					}
 				}
 			}
 
