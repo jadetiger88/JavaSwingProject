@@ -14,11 +14,18 @@ import javax.swing.tree.TreeSelectionModel;
 class ServerInfo {
 	int id;
 	String name;
+	boolean checked;
 
 	ServerInfo(String name, int id) {
 
+		this(name, id, false);
+	}
+
+	ServerInfo(String name, int id, boolean checked) {
+
 		this.name = name;
 		this.id = id;
+		this.checked = checked;
 	}
 
 	public String getName() {
@@ -37,27 +44,30 @@ class ServerInfo {
 		return name;
 	}
 
+	public boolean isChecked() {
+		return checked;
+	}
+
+	public void setChecked(boolean checked) {
+		this.checked = checked;
+	}
+
 }
 
 public class MessagePanel extends JPanel {
 
 	private JTree serverTree;
-	private DefaultTreeCellRenderer treeCellRenderer;
+	private ServerTreeCellRenderer treeCellRenderer;
 
 	public MessagePanel() {
 		serverTree = new JTree(createTreeNode());
-		treeCellRenderer = new DefaultTreeCellRenderer();
+		treeCellRenderer = new ServerTreeCellRenderer();
 		setLayout(new BorderLayout());
 		add(new JScrollPane(serverTree), BorderLayout.CENTER);
 
 		serverTree.setCellRenderer(treeCellRenderer);
 		serverTree.getSelectionModel().setSelectionMode(
 				TreeSelectionModel.SINGLE_TREE_SELECTION);
-		treeCellRenderer.setLeafIcon(Utile.createIcon("/images/Server16.gif"));
-		treeCellRenderer.setOpenIcon(Utile
-				.createIcon("/images/WebComponent16.gif"));
-		treeCellRenderer.setClosedIcon(Utile
-				.createIcon("/images/WebComponentAdd16.gif"));
 
 		serverTree.addTreeSelectionListener(new TreeSelectionListener() {
 			public void valueChanged(TreeSelectionEvent arg0) {
@@ -81,7 +91,7 @@ public class MessagePanel extends JPanel {
 
 		DefaultMutableTreeNode china = new DefaultMutableTreeNode("China");
 		DefaultMutableTreeNode shanghai = new DefaultMutableTreeNode(
-				new ServerInfo("Shanghai", id++));
+				new ServerInfo("Shanghai", id++, true));
 		DefaultMutableTreeNode beijing = new DefaultMutableTreeNode(
 				new ServerInfo("Beijing", id++));
 		DefaultMutableTreeNode nanjing = new DefaultMutableTreeNode(
