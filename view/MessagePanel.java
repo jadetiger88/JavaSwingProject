@@ -81,16 +81,10 @@ public class MessagePanel extends JPanel {
 
 	private void retrieveMessage() {
 
-		System.out
-				.println("Message waiting " + messageServer.getMessageCount());
+		progressDialog.setMaximum(messageServer.getMessageCount());
+		progressDialog.setValue(0);
 
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				System.out.println("Before Show Modal Dialog");
-				progressDialog.setVisible(true);
-				System.out.println("After Show Modal Dialog");
-			}
-		});
+		progressDialog.setVisible(true);
 
 		SwingWorker<List<Message>, Integer> worker = new SwingWorker<List<Message>, Integer>() {
 
@@ -98,8 +92,6 @@ public class MessagePanel extends JPanel {
 
 				try {
 					List<Message> retrievedMessage = get();
-					System.out.println("Done! Retrieved "
-							+ retrievedMessage.size() + " message(s).");
 				} catch (InterruptedException | ExecutionException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -110,7 +102,7 @@ public class MessagePanel extends JPanel {
 			protected void process(List<Integer> countList) {
 
 				int numMsg = countList.get(countList.size() - 1);
-				System.out.println("Got " + numMsg + " message(s).");
+				progressDialog.setValue(numMsg);
 			}
 
 			protected List<Message> doInBackground() throws Exception {
@@ -118,7 +110,6 @@ public class MessagePanel extends JPanel {
 				Integer count = 0;
 				List<Message> retrievedMessage = new ArrayList<Message>();
 				for (Message message : messageServer) {
-					System.out.println("Title: " + message.getTitle());
 					retrievedMessage.add(message);
 					count++;
 					publish(count);
