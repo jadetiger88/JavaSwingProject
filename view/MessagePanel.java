@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.Window;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -10,13 +11,11 @@ import java.util.concurrent.ExecutionException;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
+import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.event.CellEditorListener;
 import javax.swing.event.ChangeEvent;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeSelectionModel;
 
 import model.Message;
@@ -29,8 +28,10 @@ public class MessagePanel extends JPanel {
 	private ServerTreeCellEditor treeCellEditor;
 	private Set<Integer> selectedServers;
 	private MessageServer messageServer;
+	private ProgressDialog progressDialog;
 
 	public MessagePanel() {
+		progressDialog = new ProgressDialog((Window) getParent());
 		messageServer = new MessageServer();
 		selectedServers = new TreeSet<Integer>();
 		selectedServers.add(0);
@@ -83,6 +84,14 @@ public class MessagePanel extends JPanel {
 		System.out
 				.println("Message waiting " + messageServer.getMessageCount());
 
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				System.out.println("Before Show Modal Dialog");
+				progressDialog.setVisible(true);
+				System.out.println("After Show Modal Dialog");
+			}
+		});
+
 		SwingWorker<List<Message>, Integer> worker = new SwingWorker<List<Message>, Integer>() {
 
 			protected void done() {
@@ -95,6 +104,7 @@ public class MessagePanel extends JPanel {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				progressDialog.setVisible(false);
 			}
 
 			protected void process(List<Integer> countList) {
