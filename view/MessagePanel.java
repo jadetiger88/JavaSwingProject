@@ -1,12 +1,16 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.concurrent.ExecutionException;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
+import javax.swing.SwingWorker;
 import javax.swing.event.CellEditorListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.TreeSelectionEvent;
@@ -64,17 +68,56 @@ public class MessagePanel extends JPanel {
 				}
 
 				messageServer.setSelectedServer(selectedServers);
-				System.out.println("Message waiting "
-						+ messageServer.getMessageCount());
-				for (Message message : messageServer) {
-					System.out.println("Title: " + message.getTitle());
-				}
+
+				retrieveMessage();
 			}
 
 		});
 
 		setLayout(new BorderLayout());
 		add(new JScrollPane(serverTree), BorderLayout.CENTER);
+	}
+
+	private void retrieveMessage() {
+
+		System.out
+				.println("Message waiting " + messageServer.getMessageCount());
+
+		SwingWorker<List<Message>, Integer> worker = new SwingWorker<List<Message>, Integer>() {
+
+			protected void done() {
+
+				try {
+					List<Message> retrievedMessage = get();
+					System.out.println("Done! Retrieved "
+							+ retrievedMessage.size() + " message(s).");
+				} catch (InterruptedException | ExecutionException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+
+			protected void process(List<Integer> countList) {
+
+				int numMsg = countList.get(countList.size() - 1);
+				System.out.println("Got " + numMsg + " message(s).");
+			}
+
+			protected List<Message> doInBackground() throws Exception {
+
+				Integer count = 0;
+				List<Message> retrievedMessage = new ArrayList<Message>();
+				for (Message message : messageServer) {
+					System.out.println("Title: " + message.getTitle());
+					retrievedMessage.add(message);
+					count++;
+					publish(count);
+				}
+				return retrievedMessage;
+			}
+		};
+
+		worker.execute();
 	}
 
 	private DefaultMutableTreeNode createTreeNode() {

@@ -39,7 +39,6 @@ public class MessageServer implements Iterable<Message> {
 				selected.addAll(message.get(id));
 			}
 		}
-
 	}
 
 	public int getMessageCount() {
@@ -70,7 +69,7 @@ class MessageIterator implements Iterator {
 	@Override
 	public Object next() {
 		try {
-			Thread.sleep(1000);
+			Thread.sleep(5000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
