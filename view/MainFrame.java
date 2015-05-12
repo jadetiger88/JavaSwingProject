@@ -52,7 +52,7 @@ public class MainFrame extends JFrame {
 		fileChooser = new JFileChooser();
 		controller = new Controller();
 		tabPane = new JTabbedPane();
-		messagePanel = new MessagePanel();
+		messagePanel = new MessagePanel(this);
 		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, formPanel,
 				tabPane);
 		splitPane.setOneTouchExpandable(true);

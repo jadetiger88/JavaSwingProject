@@ -1,13 +1,13 @@
 package view;
 
 import java.awt.BorderLayout;
-import java.awt.Window;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.ExecutionException;
 
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
@@ -30,8 +30,8 @@ public class MessagePanel extends JPanel {
 	private MessageServer messageServer;
 	private ProgressDialog progressDialog;
 
-	public MessagePanel() {
-		progressDialog = new ProgressDialog((Window) getParent());
+	public MessagePanel(JFrame parent) {
+		progressDialog = new ProgressDialog(parent);
 		messageServer = new MessageServer();
 		selectedServers = new TreeSet<Integer>();
 		selectedServers.add(0);
