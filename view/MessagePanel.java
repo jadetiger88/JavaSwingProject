@@ -58,14 +58,16 @@ public class MessagePanel extends JPanel {
 
 	private JTree serverTree;
 	private ServerTreeCellRenderer treeCellRenderer;
+	private ServerTreeCellEditor treeCellEditor;
 
 	public MessagePanel() {
 		serverTree = new JTree(createTreeNode());
 		treeCellRenderer = new ServerTreeCellRenderer();
-		setLayout(new BorderLayout());
-		add(new JScrollPane(serverTree), BorderLayout.CENTER);
+		treeCellEditor = new ServerTreeCellEditor();
 
 		serverTree.setCellRenderer(treeCellRenderer);
+		serverTree.setCellEditor(treeCellEditor);
+		serverTree.setEditable(true);
 		serverTree.getSelectionModel().setSelectionMode(
 				TreeSelectionModel.SINGLE_TREE_SELECTION);
 
@@ -81,6 +83,8 @@ public class MessagePanel extends JPanel {
 
 		});
 
+		setLayout(new BorderLayout());
+		add(new JScrollPane(serverTree), BorderLayout.CENTER);
 	}
 
 	private DefaultMutableTreeNode createTreeNode() {
