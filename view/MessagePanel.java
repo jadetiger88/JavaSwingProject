@@ -5,12 +5,13 @@ import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
+import javax.swing.event.CellEditorListener;
+import javax.swing.event.ChangeEvent;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeSelectionModel;
-
 
 public class MessagePanel extends JPanel {
 
@@ -29,14 +30,18 @@ public class MessagePanel extends JPanel {
 		serverTree.getSelectionModel().setSelectionMode(
 				TreeSelectionModel.SINGLE_TREE_SELECTION);
 
-		serverTree.addTreeSelectionListener(new TreeSelectionListener() {
-			public void valueChanged(TreeSelectionEvent arg0) {
-				DefaultMutableTreeNode node = (DefaultMutableTreeNode) serverTree
-						.getLastSelectedPathComponent();
-				Object server = (Object) node.getUserObject();
-				Integer id = server instanceof ServerInfo ? ((ServerInfo) server)
-						.getId() : null;
-				System.out.println(server + ";		ID: " + id);
+		treeCellEditor.addCellEditorListener(new CellEditorListener() {
+
+			@Override
+			public void editingCanceled(ChangeEvent arg0) {
+			}
+
+			@Override
+			public void editingStopped(ChangeEvent e) {
+				ServerInfo info = (ServerInfo) treeCellEditor
+						.getCellEditorValue();
+				System.out.println(info + " is checked : " + info.isChecked());
+
 			}
 
 		});
