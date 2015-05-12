@@ -1,6 +1,8 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -13,13 +15,26 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeSelectionModel;
 
+import model.Message;
+import controller.MessageServer;
+
 public class MessagePanel extends JPanel {
 
 	private JTree serverTree;
 	private ServerTreeCellRenderer treeCellRenderer;
 	private ServerTreeCellEditor treeCellEditor;
+	private Set<Integer> selectedServers;
+	private MessageServer messageServer;
 
 	public MessagePanel() {
+		messageServer = new MessageServer();
+		selectedServers = new TreeSet<Integer>();
+		selectedServers.add(0);
+		selectedServers.add(3);
+		selectedServers.add(5);
+		selectedServers.add(6);
+		selectedServers.add(8);
+
 		serverTree = new JTree(createTreeNode());
 		treeCellRenderer = new ServerTreeCellRenderer();
 		treeCellEditor = new ServerTreeCellEditor();
@@ -41,7 +56,19 @@ public class MessagePanel extends JPanel {
 				ServerInfo info = (ServerInfo) treeCellEditor
 						.getCellEditorValue();
 				System.out.println(info + " is checked : " + info.isChecked());
+				int id = info.getId();
+				if (info.isChecked()) {
+					selectedServers.add(id);
+				} else {
+					selectedServers.remove(id);
+				}
 
+				messageServer.setSelectedServer(selectedServers);
+				System.out.println("Message waiting "
+						+ messageServer.getMessageCount());
+				for (Message message : messageServer) {
+					System.out.println("Title: " + message.getTitle());
+				}
 			}
 
 		});
@@ -58,43 +85,49 @@ public class MessagePanel extends JPanel {
 
 		DefaultMutableTreeNode china = new DefaultMutableTreeNode("China");
 		DefaultMutableTreeNode shanghai = new DefaultMutableTreeNode(
-				new ServerInfo("Shanghai", id++, true));
+				new ServerInfo("Shanghai", id++,
+						selectedServers.contains(id - 1)));
 		DefaultMutableTreeNode beijing = new DefaultMutableTreeNode(
-				new ServerInfo("Beijing", id++));
+				new ServerInfo("Beijing", id++,
+						selectedServers.contains(id - 1)));
 		DefaultMutableTreeNode nanjing = new DefaultMutableTreeNode(
-				new ServerInfo("Nanjing", id++));
+				new ServerInfo("Nanjing", id++,
+						selectedServers.contains(id - 1)));
 		DefaultMutableTreeNode shzhou = new DefaultMutableTreeNode(
-				new ServerInfo("Shzhou", id++));
+				new ServerInfo("Shzhou", id++, selectedServers.contains(id - 1)));
 		DefaultMutableTreeNode Wuhan = new DefaultMutableTreeNode(
-				new ServerInfo("Wuhan", id++));
+				new ServerInfo("Wuhan", id++, selectedServers.contains(id - 1)));
 
 		DefaultMutableTreeNode uk = new DefaultMutableTreeNode("UK");
 		DefaultMutableTreeNode london = new DefaultMutableTreeNode(
-				new ServerInfo("London", id++));
+				new ServerInfo("London", id++, selectedServers.contains(id - 1)));
 		DefaultMutableTreeNode edinburg = new DefaultMutableTreeNode(
-				new ServerInfo("Edinburg", id++));
+				new ServerInfo("Edinburg", id++,
+						selectedServers.contains(id - 1)));
 
 		DefaultMutableTreeNode usa = new DefaultMutableTreeNode("USA");
 		DefaultMutableTreeNode newYork = new DefaultMutableTreeNode(
-				new ServerInfo("New York", id++));
+				new ServerInfo("New York", id++,
+						selectedServers.contains(id - 1)));
 		DefaultMutableTreeNode boston = new DefaultMutableTreeNode(
-				new ServerInfo("Boston", id++));
+				new ServerInfo("Boston", id++, selectedServers.contains(id - 1)));
 		DefaultMutableTreeNode losAngele = new DefaultMutableTreeNode(
-				new ServerInfo("Los Angeles", id++));
+				new ServerInfo("Los Angeles", id++,
+						selectedServers.contains(id - 1)));
 
 		servers.add(china);
 		servers.add(uk);
 		servers.add(usa);
+		china.add(shanghai);
+		china.add(beijing);
+		china.add(nanjing);
+		china.add(shzhou);
+		china.add(Wuhan);
+		uk.add(london);
+		uk.add(edinburg);
 		usa.add(newYork);
 		usa.add(boston);
 		usa.add(losAngele);
-		uk.add(london);
-		uk.add(edinburg);
-		china.add(shanghai);
-		china.add(beijing);
-		china.add(Wuhan);
-		china.add(nanjing);
-		china.add(shzhou);
 
 		return servers;
 	}
