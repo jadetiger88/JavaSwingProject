@@ -19,6 +19,8 @@ public class ProgressDialog extends JDialog {
 
 		progressBar = new JProgressBar();
 		cancelButton = new JButton("Cancel");
+		progressBar.setStringPainted(true);
+		progressBar.setString("retrieving messages...");
 
 		setLayout(new FlowLayout());
 		Dimension size = cancelButton.getPreferredSize();
@@ -54,6 +56,12 @@ public class ProgressDialog extends JDialog {
 	}
 
 	public void setValue(int value) {
+
+		int max = progressBar.getMaximum();
+		if (max > 0) {
+			int percentCompleted = (value * 100) / max;
+			progressBar.setString(percentCompleted + "% completed" );
+		}
 		progressBar.setValue(value);
 	}
 }
