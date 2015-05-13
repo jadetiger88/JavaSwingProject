@@ -45,6 +45,7 @@ public class MessagePanel extends JPanel implements ProgressDialogListener {
 		textPanel = new TextPanel();
 		messageListModel = new DefaultListModel();
 		messageList = new JList(messageListModel);
+		messageList.setCellRenderer(new MessageListRenderer());
 		messageServer = new MessageServer();
 		selectedServers = new TreeSet<Integer>();
 		selectedServers.add(0);
@@ -125,7 +126,7 @@ public class MessagePanel extends JPanel implements ProgressDialogListener {
 					List<Message> retrievedMessage = get();
 					messageListModel.removeAllElements();
 					for (Message msg : retrievedMessage) {
-						messageListModel.addElement(msg.getTitle());
+						messageListModel.addElement(msg);
 					}
 				} catch (InterruptedException | ExecutionException e) {
 					// TODO Auto-generated catch block
