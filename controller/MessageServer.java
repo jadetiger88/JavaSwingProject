@@ -28,7 +28,7 @@ public class MessageServer implements Iterable<Message> {
 
 		list = new ArrayList<Message>();
 		list.add(new Message("How about Dinner Later?",
-				"HAre you doing anything later?"));
+				"Are you doing anything later?"));
 		message.put(1, list);
 	}
 

@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.Font;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
@@ -12,6 +13,7 @@ public class TextPanel extends JPanel {
 
 	public TextPanel() {
 		textArea = new JTextArea();
+		textArea.setFont(new Font("Serif", Font.PLAIN, 20));
 		textArea.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		setLayout(new BorderLayout());
 		add(new JScrollPane(textArea), BorderLayout.CENTER);
