@@ -18,6 +18,8 @@ import javax.swing.JTree;
 import javax.swing.SwingWorker;
 import javax.swing.event.CellEditorListener;
 import javax.swing.event.ChangeEvent;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
 
@@ -65,6 +67,18 @@ public class MessagePanel extends JPanel implements ProgressDialogListener {
 				TreeSelectionModel.SINGLE_TREE_SELECTION);
 		progressDialog.setListener(this);
 		messageServer.setSelectedServer(selectedServers);
+
+		// Add Listeners
+		messageList.addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent arg0) {
+
+				Message message = (Message) messageList.getSelectedValue();
+				if (message != null) {
+					textPanel.setText(message.getContent());
+				}
+			}
+
+		});
 
 		treeCellEditor.addCellEditorListener(new CellEditorListener() {
 			public void editingCanceled(ChangeEvent arg0) {
@@ -128,6 +142,7 @@ public class MessagePanel extends JPanel implements ProgressDialogListener {
 					for (Message msg : retrievedMessage) {
 						messageListModel.addElement(msg);
 					}
+					messageList.setSelectedIndex(0);
 				} catch (InterruptedException | ExecutionException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
