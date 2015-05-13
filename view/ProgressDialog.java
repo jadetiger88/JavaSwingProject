@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Window;
@@ -74,7 +75,15 @@ public class ProgressDialog extends JDialog {
 						e.printStackTrace();
 					}
 				}
+
+				if (b) {
+					setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+				} else {
+					setCursor(Cursor.getDefaultCursor());
+				}
+
 				ProgressDialog.super.setVisible(b);
+
 			}
 		});
 	}
