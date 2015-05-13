@@ -21,7 +21,7 @@ import javax.swing.tree.TreeSelectionModel;
 import model.Message;
 import controller.MessageServer;
 
-public class MessagePanel extends JPanel {
+public class MessagePanel extends JPanel implements ProgressDialogListener {
 
 	private JTree serverTree;
 	private ServerTreeCellRenderer treeCellRenderer;
@@ -29,9 +29,10 @@ public class MessagePanel extends JPanel {
 	private Set<Integer> selectedServers;
 	private MessageServer messageServer;
 	private ProgressDialog progressDialog;
+	private SwingWorker<List<Message>, Integer> worker;
 
 	public MessagePanel(JFrame parent) {
-		progressDialog = new ProgressDialog(parent);
+		progressDialog = new ProgressDialog(parent, "Dowloading message(s)...");
 		messageServer = new MessageServer();
 		selectedServers = new TreeSet<Integer>();
 		selectedServers.add(0);
@@ -49,7 +50,7 @@ public class MessagePanel extends JPanel {
 		serverTree.setEditable(true);
 		serverTree.getSelectionModel().setSelectionMode(
 				TreeSelectionModel.SINGLE_TREE_SELECTION);
-
+		progressDialog.setListener(this);
 		treeCellEditor.addCellEditorListener(new CellEditorListener() {
 
 			@Override
@@ -86,9 +87,13 @@ public class MessagePanel extends JPanel {
 
 		progressDialog.setVisible(true);
 
-		SwingWorker<List<Message>, Integer> worker = new SwingWorker<List<Message>, Integer>() {
+		worker = new SwingWorker<List<Message>, Integer>() {
 
 			protected void done() {
+
+				progressDialog.setVisible(false);
+				if (isCancelled() == true)
+					return;
 
 				try {
 					List<Message> retrievedMessage = get();
@@ -96,7 +101,6 @@ public class MessagePanel extends JPanel {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				progressDialog.setVisible(false);
 			}
 
 			protected void process(List<Integer> countList) {
@@ -110,6 +114,8 @@ public class MessagePanel extends JPanel {
 				Integer count = 0;
 				List<Message> retrievedMessage = new ArrayList<Message>();
 				for (Message message : messageServer) {
+					if (isCancelled() == true)
+						break;
 					retrievedMessage.add(message);
 					count++;
 					publish(count);
@@ -174,5 +180,12 @@ public class MessagePanel extends JPanel {
 		usa.add(losAngele);
 
 		return servers;
+	}
+
+	@Override
+	public void progressDialogCancelled() {
+		if (worker != null) {
+			worker.cancel(true);
+		}
 	}
 }

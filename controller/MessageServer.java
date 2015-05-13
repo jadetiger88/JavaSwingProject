@@ -71,8 +71,8 @@ class MessageIterator implements Iterator {
 		try {
 			Thread.sleep(5000);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			// Do nothing is sleep is interrupted due to cancel button press or
+			// Progress dialog box being closed.
 		}
 		return iterator.next();
 	}
