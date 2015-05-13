@@ -22,6 +22,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import controller.Controller;
 
@@ -87,6 +89,16 @@ public class MainFrame extends JFrame {
 				controller.disconnect();
 				dispose();
 				System.gc();
+			}
+		});
+
+		tabPane.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent arg0) {
+				int index = tabPane.getSelectedIndex();
+				/* Message Tab Selected */
+				if (index == 1) {
+					messagePanel.refresh();
+				}
 			}
 		});
 

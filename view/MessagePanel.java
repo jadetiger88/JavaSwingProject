@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.ExecutionException;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -37,11 +38,13 @@ public class MessagePanel extends JPanel implements ProgressDialogListener {
 	private JScrollPane leftPane;
 	private JSplitPane rightPane;
 	private JSplitPane pane;
+	private DefaultListModel messageListModel;
 
 	public MessagePanel(JFrame parent) {
 		progressDialog = new ProgressDialog(parent, "Dowloading message(s)...");
 		textPanel = new TextPanel();
-		messageList = new JList();
+		messageListModel = new DefaultListModel();
+		messageList = new JList(messageListModel);
 		messageServer = new MessageServer();
 		selectedServers = new TreeSet<Integer>();
 		selectedServers.add(0);
@@ -60,13 +63,12 @@ public class MessagePanel extends JPanel implements ProgressDialogListener {
 		serverTree.getSelectionModel().setSelectionMode(
 				TreeSelectionModel.SINGLE_TREE_SELECTION);
 		progressDialog.setListener(this);
-		treeCellEditor.addCellEditorListener(new CellEditorListener() {
+		messageServer.setSelectedServer(selectedServers);
 
-			@Override
+		treeCellEditor.addCellEditorListener(new CellEditorListener() {
 			public void editingCanceled(ChangeEvent arg0) {
 			}
 
-			@Override
 			public void editingStopped(ChangeEvent e) {
 				ServerInfo info = (ServerInfo) treeCellEditor
 						.getCellEditorValue();
@@ -77,17 +79,14 @@ public class MessagePanel extends JPanel implements ProgressDialogListener {
 				} else {
 					selectedServers.remove(id);
 				}
-
 				messageServer.setSelectedServer(selectedServers);
-
 				retrieveMessage();
 			}
-
 		});
 
 		// Set component position
-		rightPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, messageList,
-				textPanel);
+		rightPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, new JScrollPane(
+				messageList), textPanel);
 		leftPane = new JScrollPane(serverTree);
 		pane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftPane, rightPane);
 
@@ -101,6 +100,10 @@ public class MessagePanel extends JPanel implements ProgressDialogListener {
 		setLayout(new BorderLayout());
 		add(pane, BorderLayout.CENTER);
 
+	}
+
+	public void refresh() {
+		retrieveMessage();
 	}
 
 	private void retrieveMessage() {
@@ -120,6 +123,10 @@ public class MessagePanel extends JPanel implements ProgressDialogListener {
 
 				try {
 					List<Message> retrievedMessage = get();
+					messageListModel.removeAllElements();
+					for (Message msg : retrievedMessage) {
+						messageListModel.addElement(msg.getTitle());
+					}
 				} catch (InterruptedException | ExecutionException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

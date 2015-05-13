@@ -69,7 +69,7 @@ class MessageIterator implements Iterator {
 	@Override
 	public Object next() {
 		try {
-			Thread.sleep(5000);
+			Thread.sleep(1000);
 		} catch (InterruptedException e) {
 			// Do nothing is sleep is interrupted due to cancel button press or
 			// Progress dialog box being closed.
