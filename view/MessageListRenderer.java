@@ -3,6 +3,7 @@ package view;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
+import java.awt.Font;
 
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -26,9 +27,12 @@ public class MessageListRenderer implements ListCellRenderer {
 	public MessageListRenderer() {
 		panel = new JPanel();
 		label = new JLabel();
+
 		selectedColor = new Color(210, 210, 255);
 		normalColor = Color.WHITE;
 
+		label.setFont(Utile.createFont("/fonts/CrimewaveBB.ttf").deriveFont(
+				Font.TRUETYPE_FONT , 20));
 		label.setIcon(Utile.createIcon("/images/Information24.gif"));
 		panel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		panel.add(label);
