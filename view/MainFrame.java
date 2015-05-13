@@ -27,7 +27,6 @@ import controller.Controller;
 
 public class MainFrame extends JFrame {
 
-	private TextPanel textPanel;
 	private ToolBar toolBar;
 	private FormPanel formPanel;
 	private JFileChooser fileChooser;
@@ -45,7 +44,6 @@ public class MainFrame extends JFrame {
 		setLayout(new BorderLayout());
 		setJMenuBar(createMenuBar());
 		toolBar = new ToolBar();
-		textPanel = new TextPanel();
 		formPanel = new FormPanel();
 		tablePanel = new TablePanel();
 		prefsDialog = new PrefsDialog(this);

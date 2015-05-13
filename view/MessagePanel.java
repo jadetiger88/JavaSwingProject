@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -8,10 +9,11 @@ import java.util.TreeSet;
 import java.util.concurrent.ExecutionException;
 
 import javax.swing.JFrame;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.JTree;
-import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.event.CellEditorListener;
 import javax.swing.event.ChangeEvent;
@@ -30,9 +32,16 @@ public class MessagePanel extends JPanel implements ProgressDialogListener {
 	private MessageServer messageServer;
 	private ProgressDialog progressDialog;
 	private SwingWorker<List<Message>, Integer> worker;
+	private TextPanel textPanel;
+	private JList messageList;
+	private JScrollPane leftPane;
+	private JSplitPane rightPane;
+	private JSplitPane pane;
 
 	public MessagePanel(JFrame parent) {
 		progressDialog = new ProgressDialog(parent, "Dowloading message(s)...");
+		textPanel = new TextPanel();
+		messageList = new JList();
 		messageServer = new MessageServer();
 		selectedServers = new TreeSet<Integer>();
 		selectedServers.add(0);
@@ -76,8 +85,22 @@ public class MessagePanel extends JPanel implements ProgressDialogListener {
 
 		});
 
+		// Set component position
+		rightPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, messageList,
+				textPanel);
+		leftPane = new JScrollPane(serverTree);
+		pane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftPane, rightPane);
+
+		// Set component size
+		messageList.setMinimumSize(new Dimension(0, 100));
+		textPanel.setMinimumSize(new Dimension(0, 150));
+		leftPane.setMinimumSize(new Dimension(100, 0));
+		pane.setResizeWeight(0.1);
+
+		// Layout the component
 		setLayout(new BorderLayout());
-		add(new JScrollPane(serverTree), BorderLayout.CENTER);
+		add(pane, BorderLayout.CENTER);
+
 	}
 
 	private void retrieveMessage() {
