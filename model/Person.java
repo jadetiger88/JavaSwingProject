@@ -84,7 +84,7 @@ public class Person implements Serializable {
 		return usCitizen;
 	}
 
-	public void setUsCitizen(boolean usCitizen) {
+	public void setUsCitizen(Boolean usCitizen) {
 		this.usCitizen = usCitizen;
 	}
 

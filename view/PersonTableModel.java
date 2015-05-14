@@ -75,4 +75,69 @@ public class PersonTableModel extends AbstractTableModel {
 		return val;
 	}
 
+	public boolean isCellEditable(int row, int col) {
+		switch (col) {
+		case 1:
+			return true;
+		case 5:
+			return true;
+		default:
+			return false;
+		}
+	}
+
+	public void setValueAt(Object value, int row, int col) {
+
+		Person person = db.get(row);
+		switch (col) {
+		case 1:
+			person.setName((String) value);
+			return;
+		case 5:
+			person.setUsCitizen((Boolean) value);
+			return;
+		default:
+			return;
+		}
+	}
+
+	@Override
+	public Class<?> getColumnClass(int col) {
+
+		Class<?> val = null;
+
+		switch (col) {
+		case 0:
+			val = Integer.class;
+			break;
+
+		case 1:
+			val = String.class;
+			break;
+
+		case 2:
+			val = String.class;
+			break;
+
+		case 3:
+			val = String.class;
+			break;
+
+		case 4:
+			val = String.class;
+			break;
+
+		case 5:
+			val = Boolean.class;
+			break;
+
+		case 6:
+			val = String.class;
+			break;
+
+		}
+
+		return val;
+	}
+
 }
