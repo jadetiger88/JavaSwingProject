@@ -13,6 +13,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
+import model.EmploymentCategory;
 import model.Person;
 
 public class TablePanel extends JPanel {
@@ -25,6 +26,8 @@ public class TablePanel extends JPanel {
 		tableModel = new PersonTableModel();
 		table = new JTable(tableModel);
 		popUp = new JPopupMenu();
+		table.setDefaultRenderer(EmploymentCategory.class, new EmploymentCategoryRenderer());
+		table.setRowHeight(25);
 		JMenuItem deleteRow = new JMenuItem("Delete row");
 		popUp.add(deleteRow);
 		table.addMouseListener(new MouseAdapter() {

@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
+import model.EmploymentCategory;
 import model.Person;
 
 public class PersonTableModel extends AbstractTableModel {
@@ -79,6 +80,8 @@ public class PersonTableModel extends AbstractTableModel {
 		switch (col) {
 		case 1:
 			return true;
+		case 4:
+			return true;
 		case 5:
 			return true;
 		default:
@@ -124,7 +127,7 @@ public class PersonTableModel extends AbstractTableModel {
 			break;
 
 		case 4:
-			val = String.class;
+			val = EmploymentCategory.class;
 			break;
 
 		case 5:
