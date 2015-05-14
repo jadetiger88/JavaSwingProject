@@ -20,29 +20,46 @@ import java.util.List;
 public class DataBase {
 	private List<Person> people;
 	private Connection con;
+	private int port;
+	private String user;
+	private String password;
 
 	public DataBase() {
 		people = new LinkedList<Person>();
 	}
 
-	public void connect() throws Exception {
+	public void configure(int port, String user, String password)
+			throws Exception {
+		this.port = port;
+		this.user = user;
+		this.password = password;
+	}
 
-		if (con != null)
+	public void connect() throws Exception {
+		System.out.println("Enter db.connect()");
+
+		if (con != null) {
+			System.out.println("Exit db.connect: " + con);
 			return;
+		}
+
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 		} catch (ClassNotFoundException e) {
 			throw new Exception("Driver not found");
 		}
 
-		String url = "jdbc:mysql://localhost:3306/swingtest";
-		con = DriverManager.getConnection(url, "root", "root");
+		String url = "jdbc:mysql://localhost:" + port + "/swingtest";
+		con = DriverManager.getConnection(url, user, password);
+		System.out.println("Exit db.connect: " + con + ":" + user + ":"
+				+ password + ":" + port);
 	}
 
 	public void disconnect() {
 		if (con != null) {
 			try {
 				con.close();
+				con = null;
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 			}
@@ -50,6 +67,9 @@ public class DataBase {
 	}
 
 	public void save() throws SQLException {
+		if (con == null) {
+			return;
+		}
 		String checkExistSql = "select count(*) as count from people where id=?";
 		PreparedStatement checkExist = con.prepareStatement(checkExistSql);
 		String insertSql = "insert into people (id, name, age, employment, tax_id, us_citizen, gender, occupation) value(?,?,?,?,?,?,?,?)";
@@ -102,6 +122,9 @@ public class DataBase {
 	}
 
 	public void load() throws SQLException {
+		if (con == null) {
+			return;
+		}
 		people.clear();
 		String sql = "select id, name, age, employment, tax_id, us_citizen, gender, occupation from people order by name";
 		Statement select = con.createStatement();

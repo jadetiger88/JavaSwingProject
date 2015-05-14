@@ -76,6 +76,12 @@ public class MainFrame extends JFrame {
 		String password = prefs.get("password", "");
 		Integer port = prefs.getInt("port", 3306);
 		prefsDialog.setDefault(user, password, port);
+		try {
+			controller.configure(port, user, password);
+		} catch (Exception e1) {
+			// Do nothing; User will get the JDialog Error Message
+			// When try to use the Database
+		}
 
 		// Load data in table
 		tablePanel.setData(controller.getPeople());
@@ -134,6 +140,14 @@ public class MainFrame extends JFrame {
 				prefs.put("user", user);
 				prefs.put("password", password);
 				prefs.putInt("port", port);
+
+				try {
+					controller.configure(port, user, password);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					JOptionPane.showMessageDialog(MainFrame.this,
+							"Unable to connect");
+				}
 			}
 		});
 
